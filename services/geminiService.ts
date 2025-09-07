@@ -503,6 +503,40 @@ export const reduceImageNoise = async (originalImage: File, intensity: 'subtle' 
     return handleApiResponse(response, 'noise reduction');
 };
 
+/**
+ * Realistically enhances the background of an image without replacing it.
+ * @param originalImage The original image file.
+ * @returns A promise that resolves to the data URL of the image with the beautified background.
+ */
+export const beautifyBackground = async (originalImage: File): Promise<string> => {
+    console.log('Starting AI background beautification...');
+    
+    const originalImagePart = await fileToPart(originalImage);
+    const prompt = `You are an expert photo retoucher AI specializing in background enhancement. Your task is to analyze the provided image, identify the main subject(s), and then realistically beautify the existing background without altering the subject(s).
+
+The enhancement should be subtle and photorealistic, elevating the image to a professional quality. Consider applying the following improvements where appropriate:
+1.  **Depth of Field:** Add a gentle, creamy bokeh (depth-of-field blur) to the background to make the subject stand out more.
+2.  **Color & Tone:** Subtly adjust the background's color and tones to better complement the subject and create a more harmonious overall image.
+3.  **Clutter Removal:** Remove minor distracting elements or clutter from the background.
+4.  **Lighting:** Enhance the natural lighting in the background, ensuring it is consistent with the lighting on the subject.
+
+CRITICAL: The core of the background should remain the same. This is an enhancement, not a replacement. The final image must look like a single, well-shot photograph.
+
+Output: Return ONLY the final, beautifully enhanced image. Do not return text.`;
+    const textPart = { text: prompt };
+
+    const payload = {
+        model: 'gemini-2.5-flash-image-preview',
+        contents: { parts: [originalImagePart, textPart] },
+    };
+
+    console.log('Sending image to proxy for background beautification...');
+    const response = await callGeminiProxy(payload);
+    console.log('Received response from proxy for background beautification.', response);
+    
+    return handleApiResponse(response, 'beautify background');
+};
+
 
 /**
  * Sends a text prompt to Gemini to get a better, more descriptive prompt.

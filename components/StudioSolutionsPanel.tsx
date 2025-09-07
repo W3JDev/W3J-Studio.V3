@@ -34,8 +34,9 @@ const ToolButton: React.FC<{tool: any, onClick: () => void, isPro: boolean, isLo
 const SceneStudioPanel: React.FC<Pick<StudioSolutionsPanelProps, 'onApplySolution' | 'onApplyUncrop' | 'onApplyScene' | 'isLoading'>> = ({ onApplySolution, onApplyUncrop, onApplyScene, isLoading }) => {
     const { isPro } = useAuth();
     const backgroundTools: { name: string; description: string; icon: React.FC<{ className?: string; }>; prompt: string; isHighValue: boolean; action?: string; }[] = [
-        { name: 'Background Remover', description: 'Instantly remove the background with perfect precision.', icon: CutIcon, prompt: "This is a placeholder, the removeBackground function will be called directly.", isHighValue: true, action: 'removeBackground' },
-        { name: 'Smart Background', description: 'Generate multiple context-aware backgrounds for your subject.', icon: SmartBackgroundIcon, prompt: "This is a placeholder, the smart background flow will be triggered.", isHighValue: true, action: 'smartBackground' },
+        { name: 'Background Remover', description: 'Instantly remove the background with perfect precision.', icon: CutIcon, prompt: "placeholder", isHighValue: true, action: 'removeBackground' },
+        { name: 'Smart Background', description: 'Generate multiple context-aware backgrounds for your subject.', icon: SmartBackgroundIcon, prompt: "placeholder", isHighValue: true, action: 'smartBackground' },
+        { name: 'Beautify Background', description: 'AI-powered realistic enhancement of your existing background.', icon: WandSparklesIcon, prompt: "placeholder", isHighValue: true, action: 'beautifyBackground' },
     ];
     
     const [scenePrompt, setScenePrompt] = useState('');
@@ -55,7 +56,7 @@ const SceneStudioPanel: React.FC<Pick<StudioSolutionsPanelProps, 'onApplySolutio
 
     return (
         <div className="flex flex-col gap-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {backgroundTools.map(tool => <ToolButton key={tool.name} tool={tool} onClick={() => onApplySolution(tool)} isPro={isPro} isLoading={isLoading} />)}
             </div>
             <div>

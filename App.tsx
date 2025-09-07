@@ -6,7 +6,7 @@
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import ReactCrop, { type Crop, type PixelCrop } from 'react-image-crop';
-import { generateEditedImage, generateFilteredImage, generateAdjustedImage, enhancePrompt, getAiSuggestions, upscaleImage, reduceImageNoise, removeObjectInpainting, removeBackground, addShadow, generateMaskForObject, generativeExpand, generateBackgroundForSubject, uncropAndReimagine, generateProfilePictures, createComparisonImage, sharpenImage, transferStyleFromImage, autoPortraitEnhance, generatePassportPhoto, type AiSuggestion } from './services/geminiService';
+import { generateEditedImage, generateFilteredImage, generateAdjustedImage, enhancePrompt, getAiSuggestions, upscaleImage, reduceImageNoise, removeObjectInpainting, removeBackground, addShadow, generateMaskForObject, generativeExpand, generateBackgroundForSubject, uncropAndReimagine, generateProfilePictures, createComparisonImage, sharpenImage, transferStyleFromImage, autoPortraitEnhance, generatePassportPhoto, beautifyBackground, type AiSuggestion } from './services/geminiService';
 import Header from './components/Header';
 import Spinner from './components/Spinner';
 import StudioSolutionsPanel from './components/StudioSolutionsPanel';
@@ -277,7 +277,6 @@ const App: React.FC = () => {
             if (options.isHighValue) {
                 consumeCredit(1);
             } else {
-                // Fix: Call incrementMonthlyEdits with the required 'amount' argument.
                 incrementMonthlyEdits(1);
             }
         }
@@ -710,6 +709,8 @@ const App: React.FC = () => {
         handleApplyParameterlessGlobalEdit(removeBackground, "Removing background...", "Remove Background", { isHighValue: true });
     } else if (tool.action === 'smartBackground') {
         handleOpenSmartBackground();
+    } else if (tool.action === 'beautifyBackground') {
+        handleApplyParameterlessGlobalEdit(beautifyBackground, "Beautifying background...", "Beautify Background", { isHighValue: true });
     } else if (tool.action === 'autoPortraitEnhance') {
         handleApplyParameterlessGlobalEdit(autoPortraitEnhance, "Applying Portrait Enhance...", "Auto Portrait Enhance", { isHighValue: true });
     } else if (tool.action === 'passportPhoto') {
